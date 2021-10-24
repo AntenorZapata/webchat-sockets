@@ -36,6 +36,27 @@ const createMessage = (msg) => {
   ulList.appendChild(li);
 };
 
+const createUser = (users) => {
+  console.log(users);
+  ulUserList.innerHTML = '';
+  users.forEach((user) => {
+    const li = document.createElement('li');
+    li.setAttribute(TESTID, 'online-user');
+    li.textContent = user.nick;
+    ulUserList.appendChild(li);
+  });
+};
+
+// const removeUser = (curr, users) => {
+//   // const us = document.querySelectorAll('[data-testid="online-user"]');
+//   // console.log(users);
+//   console.log(curr);
+//   ulUserList.innerHTML = '';
+//   const user = users.filter((el) => el !== curr);
+//   console.log(user);
+//   createUser(user);
+// };
+
 const createHistory = (arrMsgs) => {
   arrMsgs.forEach((msg) => {
     const li = document.createElement('li');
@@ -45,15 +66,9 @@ const createHistory = (arrMsgs) => {
   });
 };
 
-const createUser = (user) => {
-  const li = document.createElement('li');
-  li.setAttribute(TESTID, 'online-user');
-  li.textContent = user;
-  ulUserList.appendChild(li);
-};
-
 socket.on('message', (msg) => createMessage(msg));
-socket.on('newUser', (user) => createUser(user));
+socket.on('newUser', (users) => createUser(users));
 socket.emit('newUser', randomNick);
 socket.emit('userConnected');
 socket.on('userConnected', (msgs) => createHistory(msgs));
+// socket.on('disc', (curr, users) => removeUser(curr, users));
