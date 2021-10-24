@@ -10,11 +10,14 @@ app.use(express.json());
 const server = http.createServer(app);
 const io = socketio(server);
 
+app.set('view engine', 'ejs');
+app.set('views', './views');
+
 const publicDirectoryPath = path.join(__dirname, 'public');
 app.use(express.static(publicDirectoryPath));
 
 app.get('/', (req, res) => {
-  res.sendFile(`${__dirname}/chat.html`);
+  res.sendFile(`${__dirname}/public/chat.html`);
 });
 
 conn(io);
