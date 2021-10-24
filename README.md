@@ -1,8 +1,17 @@
 ## Webchat
 
-### Meus comentários
 
-Neste projeto usei o pacote `socket.io` do Node.js para criar uma aplicação que trafega mensagens através de sockets. Desenvolvi um server socket e emiti eventos personalizados usando a biblioteca.
+### 💡 Meus comentários
+Neste projeto usei o pacote `socket.io` do Node.js para criar uma aplicação que trafega mensagens através de sockets. Desenvolvi um server e emiti eventos personalizados usando a biblioteca.
+
+### 🚀 Tecnologias
+
+O projeto possui as seguintes tecnologias:
+
+- Node.js
+- Express
+- Socket.io
+- MongoDB
 
 ### Lista de Requisitos
 
