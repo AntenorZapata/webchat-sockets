@@ -8,8 +8,19 @@ const removeUser = (id) => {
 
 const addUser = (id, user) => {
   const currUser = { id, nick: user };
-  users.push(currUser);
+  users.unshift(currUser);
   return users;
 };
 
-module.exports = { removeUser, addUser };
+const updateUser = (id, user) => {
+  const currUser = users.findIndex((el) => el.id === id);
+  const newUser = { id, nick: user.nickname };
+  users.splice(currUser, 1);
+  users.unshift(newUser);
+
+  return users;
+};
+
+const getAllUsers = () => users;
+
+module.exports = { removeUser, addUser, updateUser, getAllUsers };

@@ -18,7 +18,8 @@ let nickname = '';
 formNick.addEventListener('submit', (e) => {
   e.preventDefault();
   nickname = nickInput.value;
-  socket.emit('newUser', nickInput.value);
+  socket.emit('updateUser', { nickname, randomNick });
+  nickInput.value = '';
 });
 
 form.addEventListener('submit', (e) => {
@@ -36,8 +37,17 @@ const createMessage = (msg) => {
   ulList.appendChild(li);
 };
 
-const createUser = (users) => {
-  console.log(users);
+const createHistory = (arrMsgs) => {
+  arrMsgs.forEach((msg) => {
+    const li = document.createElement('li');
+    li.setAttribute(TESTID, 'message');
+    li.textContent = `${msg.timestamp} - ${msg.nickname}: ${msg.message}`;
+    ulList.appendChild(li);
+  });
+};
+
+const createUser = (users, msgs = []) => {
+  createHistory(msgs);
   ulUserList.innerHTML = '';
   users.forEach((user) => {
     const li = document.createElement('li');
@@ -57,18 +67,9 @@ const createUser = (users) => {
 //   createUser(user);
 // };
 
-const createHistory = (arrMsgs) => {
-  arrMsgs.forEach((msg) => {
-    const li = document.createElement('li');
-    li.setAttribute(TESTID, 'message');
-    li.textContent = `${msg.timestamp} - ${msg.nickname}: ${msg.message}`;
-    ulList.appendChild(li);
-  });
-};
-
 socket.on('message', (msg) => createMessage(msg));
-socket.on('newUser', (users) => createUser(users));
+socket.on('newUser', ({ users, msgs }) => createUser(users, msgs));
 socket.emit('newUser', randomNick);
 socket.emit('userConnected');
-socket.on('userConnected', (msgs) => createHistory(msgs));
+// socket.on('userConnected', (msgs) => createHistory(msgs));
 // socket.on('disc', (curr, users) => removeUser(curr, users));
