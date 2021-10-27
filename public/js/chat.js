@@ -46,30 +46,35 @@ const createHistory = (arrMsgs) => {
   });
 };
 
-const createUser = (users, msgs = []) => {
-  createHistory(msgs);
-  ulUserList.innerHTML = '';
+const listItemGenerator = (user) => {
+  const li = document.createElement('li');
+  li.setAttribute(TESTID, 'online-user');
+  li.textContent = user.nick;
+  ulUserList.appendChild(li);
+};
+
+const createUpdateUserList = (users) => {
   users.forEach((user) => {
-    const li = document.createElement('li');
-    li.setAttribute(TESTID, 'online-user');
-    li.textContent = user.nick;
-    ulUserList.appendChild(li);
+    listItemGenerator(user);
   });
 };
 
-// const removeUser = (curr, users) => {
-//   // const us = document.querySelectorAll('[data-testid="online-user"]');
-//   // console.log(users);
-//   console.log(curr);
-//   ulUserList.innerHTML = '';
-//   const user = users.filter((el) => el !== curr);
-//   console.log(user);
-//   createUser(user);
-// };
+const createUser = (users, msgs = []) => {
+  createHistory(msgs);
+  ulUserList.innerHTML = '';
+  const user = { nick: nickname };
+  listItemGenerator(user);
+  const filteredUsers = users.filter((el) => el.nick !== nickname);
+  createUpdateUserList(filteredUsers);
+};
+
+socket.on('currUser', () => {
+  const user = { nick: randomNick };
+  nickname = randomNick;
+  listItemGenerator(user);
+});
 
 socket.on('message', (msg) => createMessage(msg));
 socket.on('newUser', ({ users, msgs }) => createUser(users, msgs));
 socket.emit('newUser', randomNick);
 socket.emit('userConnected');
-// socket.on('userConnected', (msgs) => createHistory(msgs));
-// socket.on('disc', (curr, users) => removeUser(curr, users));
